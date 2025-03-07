@@ -70,15 +70,15 @@ graph2.print()
 drawGraph(graph2, 'png/IncM->AdL.png')
 
 #jakis blad
-# generateRandomWithEdges(100, 400, 'adjList', 'ned.dat')
+generateRandomWithEdges(50, 50, 'adjList', 'ned.dat')
 generateRandomWithPropabilities(50, 0.05, 'incMatrix', 'prob.dat')
 
-# graph4 = GraphAdList.GraphAdList()
-# graph4.read_list_from_file('ned.dat')
+graph4 = GraphAdList.GraphAdList()
+graph4.read_list_from_file('ned.dat')
 
-# drawGraph(graph4, 'wygenerowany1.png')
+drawGraph(graph4, 'png/wygenerowany1.png')
 
 graph5 = GraphIncMatrix.GraphIncMatrix()
 graph5.read_matrix_from_file('prob.dat')
 
-drawGraph(graph5, 'wygenerowany2.png')
+drawGraph(graph5, 'png/wygenerowany2.png')

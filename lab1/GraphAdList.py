@@ -12,7 +12,8 @@ class GraphAdList(Graph):
             for line in pl:
                 _line = line[0:-1]
                 _arg, _param = _line.split('.')
-                self._list[int(_arg)] = [int(i) for i in _param.lstrip().split(' ')];
+                self._list[int(_arg)] = [int(i) for i in _param.lstrip().split(' ')] if _param.strip() else []
+                
 
 
     def getEdges(self):
