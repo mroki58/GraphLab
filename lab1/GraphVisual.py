@@ -7,7 +7,7 @@ from Geometric import Point, Circle
 
 def drawGraph(graph, nameOfFile):
  
-    circle = Circle.Circle(600, 400, 300)  
+    circle = Circle.Circle(600, 400, 350)  
 
     cordsOfPoints = graph.calculateCords(circle)
     edges = graph.calculateEdges(cordsOfPoints)
@@ -20,7 +20,7 @@ def drawGraph(graph, nameOfFile):
 
     # Rysowanie krawędzi
     for point1, point2 in edges:
-        draw.line((point1.x, point1.y, point2.x, point2.y), fill="black", width=2)
+        draw.line((point1.x, point1.y, point2.x, point2.y), fill="black", width=1)
 
     # Rysowanie wierzchołków i etykiet
     for point in cordsOfPoints:
