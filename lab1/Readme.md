@@ -22,10 +22,10 @@ Szczegóły implementacji są udokumentowane w kodzie.
 - moduł PIL
 
 ## Instalacja  
-git clone git@github.com:mroki58/GraphLab.git
-cd GraphLab
-cd lab1
-pip install PIL // jeśli nie zainstalowany // domyślnie znajduję się w ubuntu na pewno od wersji 24.04 LTS
-python3 graphs1.test.py // aby sprawdzić czy wszystko działa
+- git clone git@github.com:mroki58/GraphLab.git
+- cd GraphLab
+- cd lab1
+- pip install PIL // jeśli nie zainstalowany // domyślnie znajduję się w ubuntu na pewno od wersji 24.04 LTS
+- python3 graphs1.test.py // aby sprawdzić czy wszystko działa / mogą być potrzebne do uruchomienia tego skryptu pliki z reprezentacją macierzy podane na zajęciach
 
 ## Autorzy
