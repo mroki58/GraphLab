@@ -1,4 +1,4 @@
-### Rozwiązanie pierwszego projektu ###
+# Rozwiązanie pierwszego projektu 
 
 ## Spis treści  
 - [Opis](#opis)  
