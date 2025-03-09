@@ -1,3 +1,7 @@
+""" 
+    Plik z przeprowadzonymi testami wszystkich funkcjonaloności
+"""
+
 import os
 import GraphAdMatrix
 import GraphAdList
