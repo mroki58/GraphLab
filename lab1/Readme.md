@@ -19,7 +19,7 @@ Szczegóły implementacji są udokumentowane w kodzie.
 
 ## Wymagania  
 - python3
-- moduł PIL
+- moduł Pillow
 
 ## Instalacja  
 - git clone git@github.com:mroki58/GraphLab.git
