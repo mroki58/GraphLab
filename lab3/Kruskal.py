@@ -14,12 +14,31 @@ class DSU:
         self.rank= [1] * n
 
     def find(self,i):
+        """
+        Znajduje reprezentanta zbioru, do którego należy element i.
+
+        Args:
+            i (int): Indeks elementu
+
+        Returns:
+            int: Reprezentant zbioru zawierającego i
+        """
         if self.parent[i] != i:
             self.parent[i] = self.find(self.parent[i])
         
         return self.parent[i]
     
     def union(self,x,y):
+        """
+        Łączy zbiory zawierające elementy x i y.
+        
+        Args:
+            x (int): Pierwszy element
+            y (int): Drugi element
+            
+        Returns:
+            bool: True jeśli zbiory zostały połączone, False jeśli już były w tym samym zbiorze
+        """
         s1 =self.find(x)
         s2 =self.find(y)
 
@@ -36,6 +55,20 @@ class DSU:
 
 
 def kruskal(matrix_weights):
+    """
+    Algorytm Kruskala znajdowania minimalnego drzewa rozpinającego (MST) w grafie.
+
+    Args:
+        matrix_weights (list): Macierz wag. Wartość 0 oznacza brak krawędzi.
+
+    Returns:
+        list: Lista krawędzi MST w formacie (u, v, w), gdzie:
+              - u, v to numery wierzchołków
+              - w to waga krawędzi
+    
+    Note:
+        Wagi krawędzi muszą być nieujemne
+    """
 
     edges=[]
     n =len(matrix_weights)
@@ -57,14 +90,6 @@ def kruskal(matrix_weights):
     return minimum_spannig_tree
 
             
-if __name__=="__main__":
-    matrix_weights=[]
-
-    with open('matrtix_weights.txt','r') as file:
-        for row in file:
-            matrix_weights.append([int(weight) for weight in row.strip().split()])
-
-    kruskal(matrix_weights)
 
 
 
