@@ -12,7 +12,7 @@ import Johnson
 def main():
     os.makedirs("examples", exist_ok=True)
     
-    print("=== Zestaw 4: Grafy skierowane i ich zastosowania ===\n")
+    print("=== Zestaw 4 ===\n")
     
 
     n = 8  
@@ -25,7 +25,7 @@ def main():
     digraph.draw("random_digraph.png")
     
     # Zad. 2
-    print("\n=== ZADANIE 2: Algorytm Kosaraju ===")
+    print("\n=== ZADANIE 2 ===")
     print("Znajdowanie silnie spójnych składowych...")
     sccs = Kosaraju.kosaraju(digraph)
     
@@ -34,7 +34,7 @@ def main():
         print(f"Składowa {i+1}: {scc}")
         
     # Zad. 3
-    print("\n=== ZADANIE 3: Algorytm Bellmana-Forda ===")
+    print("\n=== ZADANIE 3 ===")
     print("Generowanie silnie spójnego digrafu z losowymi wagami...")
     
     n_nodes = 8
@@ -60,7 +60,7 @@ def main():
         print("Odległości nie są wiarygodne w grafie z ujemnymi cyklami.")
     
     # Zad. 4
-    print("\n=== ZADANIE 4: Algorytm Johnsona ===")
+    print("\n=== ZADANIE 4 ===")
     print("Generowanie nowego grafu dla algorytmu Johnsona...")
     
     n_nodes_johnson = 8  
