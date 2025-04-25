@@ -1,3 +1,4 @@
 *.pyc
 lab1/png
 *.dat
+.vscode
