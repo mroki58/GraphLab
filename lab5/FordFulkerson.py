@@ -17,11 +17,12 @@ def findExtendingPath(G, s, t):
         for neighbor in neighbors:
             if 'no' not in G.nodes[neighbor]:
                 # to znaczy, że wierzchołek jeszcze nie był BFSowany
-                no = G.nodes[node]['no']
-                queue.appendleft(neighbor)
+                if G[node][neighbor]['c'] > 0:
+                    no = G.nodes[node]['no']
+                    queue.appendleft(neighbor)
 
-                G.nodes[neighbor]['no'] = no + 1
-                G.nodes[neighbor]['prev'] = node
+                    G.nodes[neighbor]['no'] = no + 1
+                    G.nodes[neighbor]['prev'] = node
             if neighbor == t:
                 break # nie potrzebujemy robic wiecej BFS dotarliśmy do ujścia
         print(queue)
@@ -48,11 +49,8 @@ def updateGf(Gf, path, minCf):
     for edge in edgesInPath:
         u = edge[0]
         v = edge[1]
-
-        if Gf[u][v]['c'] == minCf:
-            Gf.remove_edge(u, v)
-        else:
-            Gf[u][v]['c'] = Gf[u][v]['c'] - minCf
+  
+        Gf[u][v]['c'] = Gf[u][v]['c'] - minCf
 
         if Gf.has_edge(v, u):
             Gf[v][u]['c'] = Gf[v][u]['c'] + minCf
