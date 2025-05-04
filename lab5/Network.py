@@ -1,109 +1,160 @@
+"""
+Moduł zawiera klasę Network, która umożliwia tworzenie i wizualizację grafów warstwowych.
+"""
+
 import networkx as nx
 import matplotlib.pyplot as plt
 import random
 import os
 
+
 class Network:
+    """
+    Klasa Network reprezentuje graf skierowany z warstwami wierzchołków.
+
+    Umożliwia tworzenie grafów warstwowych, dodawanie losowych krawędzi, przypisywanie wag do krawędzi
+    oraz wizualizację grafu.
+    """
+
     def __init__(self):
-        self._graph = nx.DiGraph()
-        self._idOfLastVertex = 0
-        self._N = 0
+        """
+        Inicjalizuje pusty graf skierowany.
+        """
+        self._graph = nx.DiGraph()  # Graf skierowany
+        self._idOfLastVertex = 0  # Identyfikator ostatniego wierzchołka
+        self._N = 0  # Liczba warstw w grafie
 
     def createLayers(self, N):
-        self._graph.add_node(0, label="S", layer =0)
-        self._graph.add_node(1, label="T", layer =(N + 1))
+        """
+        Tworzy graf warstwowy z N warstwami.
 
-        previousLayer = [0]
+        Parameters
+        ----------
+        N : int
+            Liczba warstw w grafie.
+        """
+        # Dodanie wierzchołków źródła (S) i ujścia (T)
+        self._graph.add_node(0, label="S", layer=0)
+        self._graph.add_node(1, label="T", layer=(N + 1))
 
-        k = 2
+        previousLayer = [0]  # Wierzchołki w poprzedniej warstwie
+        k = 2  # Identyfikator pierwszego wierzchołka w warstwach
 
+        # Tworzenie warstw
         for i in range(N):
-            vertexInLayers = random.randint(2, N)
+            vertexInLayers = random.randint(2, N)  # Liczba wierzchołków w warstwie
             nextLayer = []
             for j in range(vertexInLayers):
-                self._graph.add_node(k, layer=(i + 1))
+                self._graph.add_node(k, layer=(i + 1))  # Dodanie wierzchołka do warstwy
                 nextLayer.append(k)
                 k += 1
-            
-            self._createEdgesBetweenLayers(previousLayer, nextLayer)
-            previousLayer = nextLayer  
 
+            # Tworzenie krawędzi między warstwami
+            self._createEdgesBetweenLayers(previousLayer, nextLayer)
+            previousLayer = nextLayer
+
+        # Połączenie ostatniej warstwy z ujściem (T)
         self._createEdgesBetweenLayers(previousLayer, [1])
 
+        # Aktualizacja identyfikatora ostatniego wierzchołka i liczby warstw
         self._idOfLastVertex = k - 1
         self._N = N
 
+    def _createEdgesBetweenLayers(self, previousLayer, nextLayer):
+        """
+        Tworzy krawędzie między wierzchołkami dwóch sąsiednich warstw.
 
-   
-    def _createEdgesBetweenLayers(self, previousLayer, nextLayer):      
-        usedFromNext = set()
-        usedFromPrev = set()
+        Parameters
+        ----------
+        previousLayer : list of int
+            Lista wierzchołków w poprzedniej warstwie.
+        nextLayer : list of int
+            Lista wierzchołków w następnej warstwie.
+        """
+        usedFromNext = set()  # Wierzchołki z następnej warstwy, które zostały użyte
+        usedFromPrev = set()  # Wierzchołki z poprzedniej warstwy, które zostały użyte
 
         i = 0
-
+        # Tworzenie krawędzi, aż wszystkie wierzchołki zostaną połączone
         while usedFromNext != set(nextLayer) or usedFromPrev != set(previousLayer):
-            v = previousLayer[i % len(previousLayer)]
-            u = random.choice(nextLayer)
+            v = previousLayer[i % len(previousLayer)]  # Wierzchołek z poprzedniej warstwy
+            u = random.choice(nextLayer)  # Losowy wierzchołek z następnej warstwy
 
             usedFromPrev.add(v)
             usedFromNext.add(u)
 
+            # Dodanie krawędzi, jeśli jeszcze nie istnieje
             if not self._graph.has_edge(v, u):
                 self._graph.add_edge(v, u)
             i += 1
 
-
     def addRandomEdges(self):
-        randomEdgesToAdd = 2 * self._N
-        edges = self._graph.edges()
-        edges_set = set(edges)
+        """
+        Dodaje losowe krawędzie między wierzchołkami grafu.
+
+        Liczba dodanych krawędzi jest równa dwukrotności liczby warstw w grafie.
+        """
+        randomEdgesToAdd = 2 * self._N  # Liczba losowych krawędzi do dodania
+        edges = self._graph.edges()  # Istniejące krawędzie
+        edges_set = set(edges)  # Zbiór istniejących krawędzi
 
         i = 0
         while i < randomEdgesToAdd:
-            v = random.randint(0, self._idOfLastVertex)
-            u = random.randint(0, self._idOfLastVertex)
+            v = random.randint(0, self._idOfLastVertex)  # Losowy wierzchołek źródłowy
+            u = random.randint(0, self._idOfLastVertex)  # Losowy wierzchołek docelowy
 
-            if u == v:
+            # Pomijanie niepoprawnych krawędzi
+            if u == v or v == 1 or u == 0 or (v, u) in edges_set:
                 continue
 
-            if v == 1 or u == 0:
-                continue
-
-            if (v, u) in edges_set:
-                continue
-
+            # Dodanie krawędzi
             self._graph.add_edge(v, u)
-            edges_set.add((v,u))
+            edges_set.add((v, u))
             i += 1
 
-                
-
     def addWeights(self):
+        """
+        Przypisuje losowe wagi do krawędzi grafu.
+
+        Wagi są losowane z zakresu od 1 do 10.
+        """
         for u, v in self._graph.edges():
-            self._graph[u][v]['c'] = random.randint(1, 10)  
-
-
+            self._graph[u][v]['c'] = random.randint(1, 10)
 
     def draw(self):
-        pos = nx.multipartite_layout(self._graph, subset_key="layer")
-        labels = nx.get_node_attributes(self._graph, 'label')  
-        edge_labels = nx.get_edge_attributes(self._graph, 'c') 
+        """
+        Rysuje graf i wyświetla go w oknie.
 
+        Wierzchołki są rozmieszczone zgodnie z ich warstwami.
+        """
+        pos = nx.multipartite_layout(self._graph, subset_key="layer")  # Rozmieszczenie wierzchołków
+        labels = nx.get_node_attributes(self._graph, 'label')  # Etykiety wierzchołków
+        edge_labels = nx.get_edge_attributes(self._graph, 'c')  # Wagi krawędzi
 
+        # Rysowanie grafu
         nx.draw(self._graph, pos, with_labels=True, labels=labels)
         nx.draw_networkx_edge_labels(self._graph, pos, edge_labels=edge_labels, label_pos=0.2)
         plt.show()
 
     def getGraph(self):
+        """
+        Zwraca obiekt grafu NetworkX.
+
+        Returns
+        -------
+        networkx.DiGraph
+            Obiekt grafu skierowanego.
+        """
         return self._graph
 
 
 if __name__ == "__main__":
+    # Przykład użycia klasy Network
     net = Network()
-    net.createLayers(2)
-    net.addRandomEdges()
-    net.addWeights()
-    net.draw()
+    net.createLayers(2)  # Tworzenie grafu z 2 warstwami
+    net.addRandomEdges()  # Dodanie losowych krawędzi
+    net.addWeights()  # Dodanie wag do krawędzi
+    net.draw()  # Wizualizacja grafu
 
 
 
