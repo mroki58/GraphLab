@@ -6,6 +6,8 @@ import networkx as nx
 import matplotlib.pyplot as plt
 import random
 import os
+import numpy as np
+
 
 
 class Network:
@@ -88,29 +90,35 @@ class Network:
                 self._graph.add_edge(v, u)
             i += 1
 
+    
+
     def addRandomEdges(self):
         """
         Dodaje losowe krawędzie między wierzchołkami grafu.
 
         Liczba dodanych krawędzi jest równa dwukrotności liczby warstw w grafie.
         """
-        randomEdgesToAdd = 2 * self._N  # Liczba losowych krawędzi do dodania
-        edges = self._graph.edges()  # Istniejące krawędzie
-        edges_set = set(edges)  # Zbiór istniejących krawędzi
+        randomEdgesToAdd = 2 * self._N  # liczba krawędzi do dodania
+        edges_set = set(self._graph.edges())
 
         i = 0
         while i < randomEdgesToAdd:
-            v = random.randint(0, self._idOfLastVertex)  # Losowy wierzchołek źródłowy
-            u = random.randint(0, self._idOfLastVertex)  # Losowy wierzchołek docelowy
+            v = random.randint(0, self._idOfLastVertex)
+            u = random.randint(0, self._idOfLastVertex)
 
-            # Pomijanie niepoprawnych krawędzi
-            if u == v or v == 1 or u == 0 or (v, u) in edges_set:
+            if (
+                u == v or          # bez pętli
+                v == 1 or          # nie wychodzą z ujścia
+                u == 0 or          # nie wchodzą do źródła
+                (v, u) in edges_set or
+                (u, v) in edges_set  # sprawdzamy też krawędzie w przeciwnym kierunku
+            ):
                 continue
 
-            # Dodanie krawędzi
             self._graph.add_edge(v, u)
             edges_set.add((v, u))
             i += 1
+
 
     def addWeights(self):
         """
@@ -121,20 +129,42 @@ class Network:
         for u, v in self._graph.edges():
             self._graph[u][v]['c'] = random.randint(1, 10)
 
+    
+
     def draw(self):
+        
         """
-        Rysuje graf i wyświetla go w oknie.
+         Rysuje graf i wyświetla go w oknie.
 
-        Wierzchołki są rozmieszczone zgodnie z ich warstwami.
-        """
-        pos = nx.multipartite_layout(self._graph, subset_key="layer")  # Rozmieszczenie wierzchołków
-        labels = nx.get_node_attributes(self._graph, 'label')  # Etykiety wierzchołków
-        edge_labels = nx.get_edge_attributes(self._graph, 'c')  # Wagi krawędzi
+         Wierzchołki są rozmieszczone zgodnie z ich warstwami,
+         z lekkim losowym przesunięciem, żeby uniknąć nakładania się krawędzi.
+         """
+        pos = nx.multipartite_layout(self._graph, subset_key="layer")
 
-        # Rysowanie grafu
+        
+        for node in pos:
+            dx = np.random.uniform(-0.2, 0.2)
+            dy = np.random.uniform(-0.2, 0.2)
+            pos[node] = (pos[node][0] + dx, pos[node][1] + dy)
+
+        labels = nx.get_node_attributes(self._graph, 'label')
+
+        
+        edge_labels = {}
+        for u, v, data in self._graph.edges(data=True):
+            flow = data.get('f', 0)          
+            capacity = data.get('c', None)   
+            if capacity is not None:
+                edge_labels[(u, v)] = f"{flow} / {capacity}"
+            else:
+                edge_labels[(u, v)] = f"{flow}"
+
         nx.draw(self._graph, pos, with_labels=True, labels=labels)
-        nx.draw_networkx_edge_labels(self._graph, pos, edge_labels=edge_labels, label_pos=0.2)
+        nx.draw_networkx_edge_labels(self._graph, pos, edge_labels=edge_labels, label_pos=0.3)
         plt.show()
+
+
+    
 
     def getGraph(self):
         """
