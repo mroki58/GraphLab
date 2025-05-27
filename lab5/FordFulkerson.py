@@ -161,7 +161,7 @@ if __name__ == "__main__":
 
     Tworzy graf warstwowy, oblicza maksymalny przepływ i wizualizuje graf.
     """
-    net = createNetwork(2)  # Tworzenie grafu z 2 warstwami
+    net = createNetwork(3)  # Tworzenie grafu z 2 warstwami
     graph = net.getGraph()
     print("Maksymalny przepływ:", FordFulkerson(graph))  # Obliczenie maksymalnego przepływu
     net.draw()  # Wizualizacja grafu

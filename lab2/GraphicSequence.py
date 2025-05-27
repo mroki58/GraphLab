@@ -3,7 +3,6 @@ import matplotlib.pyplot as plt
 import random
 import os
 
-# Utwórz folder na zapisywane obrazy
 os.makedirs("examples", exist_ok=True)
 
 
@@ -350,7 +349,7 @@ def hamiltonian_cycle(G):
 
 if __name__ == "__main__":
     # Zadanie 1: Sprawdzanie ciągu graficznego i budowanie grafu
-    sequence = [1, 1, 1, 1]
+    sequence = [4, 2, 2, 3, 2, 1, 4, 2, 2, 2, 2, 2, 4, 1, 1, 1, 1]
     A = sequence.copy()
 
     if is_graphical_sequence(A):
@@ -362,23 +361,38 @@ if __name__ == "__main__":
         print("Ciąg nie jest grafowy")
 
     # Zadanie 2: Randomizacja krawędzi
-    G2 = randomize_graph(G1, 50)
+    G2 = randomize_graph(G1, 25)
     save_graph_image(G2, "graph_task_2.png")
     format_components(connected_components(G2))
 
     # Zadanie 3: Składowe spójności
-    comp = connected_components(G2)
-    save_graph_image(G2, "graph_task_3.png")
+    G10 = nx.Graph()
+
+    G10.add_edges_from([
+        (1, 2), (2, 3), (3, 4), (4, 5), (5, 6), (6, 1)
+    ])
+
+    G10.add_edges_from([
+        (10, 11), (11, 12), (12, 13)
+    ])
+
+    G10.add_edges_from([
+        (20, 21), (21, 22)
+    ])
+
+
+    comp = connected_components(G10)
+    save_graph_image(G10, "graph_task_3.png")
     format_components(comp)
 
     # Zadanie 4: Cykl Eulera
-    G3 = generate_eulerian_graph(10, 2, 6)
+    G3 = generate_eulerian_graph(5, 2, 6)
     if G3:
         save_graph_image(G3, "graph_task_4.png")
         print(f"Cykl Eulera: {fleury(G3)}")
 
     # Zadanie 5: Graf k-regularny
-    G4 = regular_graph(10, 4)
+    G4 = regular_graph(7, 2)
     if G4:
         save_graph_image(G4, "graph_task_5.png")
         format_components(connected_components(G4))
