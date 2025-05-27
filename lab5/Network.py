@@ -161,6 +161,7 @@ class Network:
 
         nx.draw(self._graph, pos, with_labels=True, labels=labels)
         nx.draw_networkx_edge_labels(self._graph, pos, edge_labels=edge_labels, label_pos=0.3)
+        plt.savefig("network_flow.png", dpi=300, bbox_inches='tight')
         plt.show()
 
 

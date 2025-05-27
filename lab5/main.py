@@ -1,6 +1,7 @@
 from Preparing import createNetwork
 from FordFulkerson import FordFulkerson
 import networkx as nx
+import matplotlib.pyplot as plt
 
 def main():
     """
@@ -9,7 +10,7 @@ def main():
     """
 
     # Tworzymy graf warstwowy z 3 warstwami
-    layers = 3
+    layers = 2
     print(f"Tworzenie grafu warstwowego z {layers} warstwami...")
     net = createNetwork(layers)
 
@@ -21,6 +22,9 @@ def main():
     # Wizualizacja grafu z wagami krawędzi
     print("Wyświetlanie grafu...")
     net.draw()
+
+
+
 
 if __name__ == "__main__":
     main()
