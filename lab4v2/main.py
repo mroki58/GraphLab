@@ -1,6 +1,5 @@
 import sys
 
-# Importy z naszych modułów
 from graph import DirectedGraph
 from algorithms import KosarajuAlgorithm, BellmanFord, JohnsonAlgorithm
 from utils import (generate_random_digraph, generate_strongly_connected_digraph, 
